@@ -28,6 +28,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class SeleniumTest {
@@ -43,6 +44,17 @@ public class SeleniumTest {
     public void beforeTest(){
         System.setProperty("webdriver.chrome.driver", "/opt/homebrew/bin/chromedriver");
         ChromeOptions options = new ChromeOptions();
+
+//        Scenario 3 Changes Start
+        HashMap<String, Object> chromeOptionsMap = new HashMap<String, Object>();
+        chromeOptionsMap.put("plugins.plugins_disabled", new String[] { "Chrome PDF Viewer" });
+        chromeOptionsMap.put("plugins.always_open_pdf_externally", true);
+        chromeOptionsMap.put("download.default_directory", "/Users/deepshah/Desktop/Deep/Selenium/output/downloads");
+        options.setExperimentalOption("prefs", chromeOptionsMap);
+        options.addArguments("--remote-allow-origins=*");
+
+//        Sceanrio 3 Changes end
+
         options.addArguments("user-data-dir=~/Library/Application Support/Google/Chrome");
         options.addArguments("--start-maximized");
         driver = new ChromeDriver(options);
@@ -334,10 +346,7 @@ public class SeleniumTest {
             String uRL = driver.getCurrentUrl();
 
             System.out.println("URL" + uRL);
-
-            driver.findElement(By.xpath("//*[@id=\"icon\"]/iron-icon")).click();
-            Thread.sleep(3000);
-//
+            
 //            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"icon\"]/iron-icon//svg/g/path']")));
 //            System.out.println("In");
 //            driver.findElement(By.xpath("//*[@id=\"icon\"]/iron-icon//svg/g/path")).click();
